@@ -1,16 +1,13 @@
 from flask import Flask, request, jsonify, render_template
 from textblob import TextBlob
-from openai import OpenAI
+import openai
 import os
-import random
 
 app = Flask(__name__)
 
-client = OpenAI(
-    api_key = os.environ.get("OPENAI_API_KEY")
-)
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Helper function to generate a random placeholder image URL
+# Helper function to generate an image URL based on user text
 def generate_image_url(text):
     response = client.images.generate(
         model="dall-e-3",
