@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Generator & Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .image-container img {
+            width: 480px;
+            height: 480px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Generator & Sentiment Analysis</h1>
+
+        <form id="form" action="/process" method="POST">
+            <label for="text">Enter text for Image or Sentiment Analysis:</label><br><br>
+            <p>Please wait a few minutes for the image.</p>
+            <textarea id="text" name="text" rows="4" cols="50" placeholder="Type something here..."></textarea><br><br>
+
+            <button type="submit">Generate Image & Analyze Sentiment</button>
+        </form>
+
+        <div class="result">
+            <h2>Text Sentiment Analysis:</h2>
+            <div id="sentimentResult">
+                <!-- Sentiment result will be displayed here -->
+            </div>
+
+            <h2>Generated Image:</h2>
+            <div class="image-container" id="imageContainer">
+                <!-- Image will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const text = document.getElementById('text').value;
+
+            // Send the request to the server using fetch
+            fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display generated image
+                const imageContainer = document.getElementById('imageContainer');
+                imageContainer.innerHTML = `<img src="${data.image_url}" alt="Generated Image">`;
+
+                // Display sentiment analysis result
+                const sentimentResult = document.getElementById('sentimentResult');
+                sentimentResult.innerHTML = `<p>Sentiment: <strong>${data.sentiment}</strong></p>`;
+            });
+        });
+    </script>
+</body>
+</html>
