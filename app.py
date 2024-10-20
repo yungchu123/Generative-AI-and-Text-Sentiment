@@ -9,7 +9,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Helper function to generate an image URL based on user text
 def generate_image_url(text):
-    response = client.images.generate(
+    response = openai.Image.create(
         model="dall-e-3",
         prompt=text,
         size="1024x1024",
